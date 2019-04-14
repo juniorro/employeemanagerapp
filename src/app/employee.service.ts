@@ -13,8 +13,8 @@ export class EmployeeService {
   constructor(private http: HttpClient) {}
 
   public getEmployees(): Observable<Employee[]> {
-    let headers = new HttpHeaders().set('Access-Control-Allow-Origin', '*');
-    return this.http.get<Employee[]>(`${this.SERVER_URL}/employee/all}`, {headers: headers});
+    console.log(`${this.SERVER_URL}/employee/all}`);
+    return this.http.get<Employee[]>(`${this.SERVER_URL}/employee/all`);
   }
 
 }
