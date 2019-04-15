@@ -1,4 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
+import { NgForm } from '@angular/forms';
 import { Subscription } from 'rxjs'
 import { NotifierService } from 'angular-notifier';
 import { EmployeeService } from './employee.service';
@@ -41,20 +42,22 @@ export class AppComponent implements OnInit, OnDestroy {
     );
   }
 
-  public addEmployee(employee: Employee): void {
+  public addEmployee(employeeForm: NgForm): void {
     document.getElementById('addFormId').click();
     this.subscription.push(
-      this.employeeService.addEmployee(employee)
+      this.employeeService.addEmployee(employeeForm.value)
       .subscribe(
         (response: Employee) =>{
           console.log(response);
           this.employee = response;
           this.getEmployeeList();
           this.showNotification('success', `${this.employee.name} has been added successfully`);
+          employeeForm.reset();
         },
         (error: any) => {
           console.log(error);
-          this.showNotification('error', `${employee.name} has been not added. Please try again`);
+          this.showNotification('error', `${employeeForm.value.name} has been not added. Please try again`);
+          employeeForm.reset();
         }
       )
     );
@@ -91,7 +94,7 @@ export class AppComponent implements OnInit, OnDestroy {
         },
         (error: any) => {
           console.log(error);
-          this.showNotification('error', `Employee been not deleted. Please try again`);
+          this.showNotification('error', `Employee was not deleted. Please try again`);
         }
       )
     );
