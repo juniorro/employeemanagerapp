@@ -23,22 +23,37 @@ export class AppComponent implements OnInit, OnDestroy {
     this.employeeService = employeeService;
   }
 
-  ngOnInit(){
+  ngOnInit() {
     this.getEmployeeList();
   }
 
   public getEmployeeList(): void {
     this.subscription.push(
       this.employeeService.getEmployees()
-      .subscribe(
-        (response: Employee[]) =>{
-          console.log(response);
-          this.employees = response;
-        },
-        (error: any) => {
-          console.log(error);
-        }
-      )
+        .subscribe(
+          (response: Employee[]) => {
+            console.info(response);
+            this.employees = response;
+          },
+          (error: any) => {
+            console.error(error);
+          }
+        )
+    );
+  }
+
+  public searchEmployees(employeeName: string): void {
+    this.subscription.push(
+      this.employeeService.searchEmployees(employeeName)
+        .subscribe(
+          (response: Employee[]) => {
+            console.info(response);
+            this.employees = response;
+          },
+          (error: any) => {
+            console.error(error);
+          }
+        )
     );
   }
 
@@ -46,20 +61,20 @@ export class AppComponent implements OnInit, OnDestroy {
     document.getElementById('addFormId').click();
     this.subscription.push(
       this.employeeService.addEmployee(employeeForm.value)
-      .subscribe(
-        (response: Employee) =>{
-          console.log(response);
-          this.employee = response;
-          this.getEmployeeList();
-          this.showNotification('success', `${this.employee.name} has been added successfully`);
-          employeeForm.reset();
-        },
-        (error: any) => {
-          console.log(error);
-          this.showNotification('error', `${employeeForm.value.name} has been not added. Please try again`);
-          employeeForm.reset();
-        }
-      )
+        .subscribe(
+          (response: Employee) => {
+            console.info(response);
+            this.employee = response;
+            this.getEmployeeList();
+            this.showNotification('success', `${this.employee.name} has been added successfully`);
+            employeeForm.reset();
+          },
+          (error: any) => {
+            console.error(error);
+            this.showNotification('error', `${employeeForm.value.name} has been not added. Please try again`);
+            employeeForm.reset();
+          }
+        )
     );
   }
 
@@ -67,52 +82,44 @@ export class AppComponent implements OnInit, OnDestroy {
     document.getElementById(employee.userCode).click();
     this.subscription.push(
       this.employeeService.updateEmployee(employee)
-      .subscribe(
-        (response: Employee) =>{
-          console.log(response);
-          this.employee = response;
-          this.getEmployeeList();
-          this.showNotification('success', `${this.employee.name} has been updated successfully`);
-        },
-        (error: any) => {
-          console.log(error);
-          this.showNotification('error', `${employee.name} has been not updated. Please try again`);
-        }
-      )
+        .subscribe(
+          (response: Employee) => {
+            console.info(response);
+            this.employee = response;
+            this.getEmployeeList();
+            this.showNotification('success', `${this.employee.name} has been updated successfully`);
+          },
+          (error: any) => {
+            console.error(error);
+            this.showNotification('error', `${employee.name} has been not updated. Please try again`);
+          }
+        )
     );
   }
 
   public deleteEmployee(employeeId: number): void {
     this.subscription.push(
       this.employeeService.deleteEmployee(employeeId)
-      .subscribe(
-        (response: Employee) =>{
-          console.log(response);
-          this.employee = response;
-          this.getEmployeeList();
-          this.showNotification('success', `Employee has been deleted successfully`);
-        },
-        (error: any) => {
-          console.log(error);
-          this.showNotification('error', `Employee was not deleted. Please try again`);
-        }
-      )
+        .subscribe(
+          (response: Employee) => {
+            console.info(response);
+            this.employee = response;
+            this.getEmployeeList();
+            this.showNotification('success', `Employee has been deleted successfully`);
+          },
+          (error: any) => {
+            console.error(error);
+            this.showNotification('error', `Employee was not deleted. Please try again`);
+          }
+        )
     );
   }
-  
 
-
-	/**
-	 * Show a notification
-	 *
-	 * @param {string} type    Notification type
-	 * @param {string} message Notification message
-	 */
-	public showNotification( type: string, message: string ): void {
-		this.notifier.notify( type, message );
+  public showNotification(type: string, message: string): void {
+    this.notifier.notify(type, message);
   }
-  
-  ngOnDestroy(){
+
+  ngOnDestroy() {
     this.subscription.forEach(sub => sub.unsubscribe());
   }
 
