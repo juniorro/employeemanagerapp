@@ -12,6 +12,7 @@ import { Employee } from './employee';
 export class AppComponent implements OnInit, OnDestroy {
 
   private employees: Employee[];
+  private employee: Employee = new Employee();
   private subscription: Subscription[] = [];
   private notifier: NotifierService;
   private employeeService: EmployeeService
@@ -35,6 +36,62 @@ export class AppComponent implements OnInit, OnDestroy {
         },
         (error: any) => {
           console.log(error);
+        }
+      )
+    );
+  }
+
+  public addEmployee(employee: Employee): void {
+    document.getElementById('addFormId').click();
+    this.subscription.push(
+      this.employeeService.addEmployee(employee)
+      .subscribe(
+        (response: Employee) =>{
+          console.log(response);
+          this.employee = response;
+          this.getEmployeeList();
+          this.showNotification('success', `${this.employee.name} has been added successfully`);
+        },
+        (error: any) => {
+          console.log(error);
+          this.showNotification('error', `${employee.name} has been not added. Please try again`);
+        }
+      )
+    );
+  }
+
+  public editEmployee(employee: Employee): void {
+    document.getElementById(employee.userCode).click();
+    this.subscription.push(
+      this.employeeService.updateEmployee(employee)
+      .subscribe(
+        (response: Employee) =>{
+          console.log(response);
+          this.employee = response;
+          this.getEmployeeList();
+          this.showNotification('success', `${this.employee.name} has been updated successfully`);
+        },
+        (error: any) => {
+          console.log(error);
+          this.showNotification('error', `${employee.name} has been not updated. Please try again`);
+        }
+      )
+    );
+  }
+
+  public deleteEmployee(employeeId: number): void {
+    this.subscription.push(
+      this.employeeService.deleteEmployee(employeeId)
+      .subscribe(
+        (response: Employee) =>{
+          console.log(response);
+          this.employee = response;
+          this.getEmployeeList();
+          this.showNotification('success', `Employee has been deleted successfully`);
+        },
+        (error: any) => {
+          console.log(error);
+          this.showNotification('error', `Employee been not deleted. Please try again`);
         }
       )
     );

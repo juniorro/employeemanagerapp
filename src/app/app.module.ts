@@ -1,6 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 // Notifier Module
 import { NotifierModule, NotifierOptions } from 'angular-notifier';
@@ -63,7 +64,7 @@ const customNotifierOptions: NotifierOptions = {
     AppComponent
   ],
   imports: [
-    BrowserModule, HttpClientModule, NotifierModule.withConfig(customNotifierOptions)
+    BrowserModule, FormsModule, ReactiveFormsModule, HttpClientModule, NotifierModule.withConfig(customNotifierOptions)
   ],
   providers: [EmployeeService],
   bootstrap: [AppComponent]

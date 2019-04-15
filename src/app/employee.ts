@@ -1,9 +1,9 @@
 export class Employee {
-    private id: number;
-    private name: string;
-    private email: string;
-    private jobTitle: string;
-    private phone: string;
-    private imageUrl: string;
-    private userCode: string;
+    public id: number;
+    public name: string;
+    public email: string;
+    public jobTitle: string;
+    public phone: string;
+    public imageUrl: string;
+    public userCode: string;
 }
