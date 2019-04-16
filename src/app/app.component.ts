@@ -12,8 +12,8 @@ import { Employee } from './employee';
 })
 export class AppComponent implements OnInit, OnDestroy {
 
-  private employees: Employee[];
-  private employee: Employee = new Employee();
+  public employees: Employee[];
+  public employee: Employee = new Employee();
   private subscription: Subscription[] = [];
   private notifier: NotifierService;
   private employeeService: EmployeeService;
