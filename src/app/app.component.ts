@@ -65,14 +65,14 @@ export class AppComponent implements OnInit, OnDestroy {
   public addEmployee(employeeForm: NgForm): void {
     document.getElementById('addFormId').click();
     console.log('Adding employee...', employeeForm.value);
-    this.employees.unshift(employeeForm.value);
+    //this.employees.unshift(employeeForm.value);
     this.subscription.push(
       this.employeeService.addEmployee(employeeForm.value)
         .subscribe(
           (response: Employee) => {
             console.log(response);
             this.employee = response;
-            //this.getEmployeeList();
+            this.getEmployeeList();
             this.showNotification(NotificationType.SUCCESS, `${this.employee.name} has been added successfully`);
             employeeForm.reset();
           },
@@ -86,7 +86,6 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   public editEmployee(employee: Employee): void {
-    document.getElementById(employee.employeeCode).click();
     console.log(`Editing employee...${employee}`);
     this.subscription.push(
       this.employeeService.updateEmployee(employee)
@@ -107,16 +106,15 @@ export class AppComponent implements OnInit, OnDestroy {
 
   public deleteEmployee(employeeId: number): void {
     console.log(`Deleting employee by id: ${employeeId}`);
-    const index: number = this.employees.findIndex(employee => employee.id === employeeId);
-    this.employees.splice(index, 1);
-    console.log(this.employees);
+    // const index: number = this.employees.findIndex(employee => employee.id === employeeId);
+    // this.employees.splice(index, 1);
     this.subscription.push(
       this.employeeService.deleteEmployee(employeeId)
         .subscribe(
           (response: Employee) => {
             console.log(`Employee deleted`);
             this.employee = response;
-            //this.getEmployeeList();
+            this.getEmployeeList();
             this.showNotification(NotificationType.SUCCESS, `Employee has been deleted successfully`);
           },
           (error: HttpErrorResponse) => {
