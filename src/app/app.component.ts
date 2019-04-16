@@ -4,6 +4,8 @@ import { Subscription } from 'rxjs';
 import { NotifierService } from 'angular-notifier';
 import { EmployeeService } from './employee.service';
 import { Employee } from './employee';
+import { HttpErrorResponse } from '@angular/common/http';
+import { NotificationType } from './notificationType.enum';
 
 @Component({
   selector: 'app-root',
@@ -28,15 +30,15 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   public getEmployeeList(): void {
+    console.log('Fetching all employees...');
     this.subscription.push(
       this.employeeService.getEmployees()
         .subscribe(
           (response: Employee[]) => {
-            console.log('Fetching all employees...');
             console.log(response);
             this.employees = response;
           },
-          (error: any) => {
+          (error: HttpErrorResponse) => {
             console.error(error);
           }
         )
@@ -53,7 +55,7 @@ export class AppComponent implements OnInit, OnDestroy {
             console.log('Employees Found...', this.employees);
             this.employees = response;
           },
-          (error: any) => {
+          (error: HttpErrorResponse) => {
             console.error(error);
           }
         )
@@ -63,19 +65,20 @@ export class AppComponent implements OnInit, OnDestroy {
   public addEmployee(employeeForm: NgForm): void {
     document.getElementById('addFormId').click();
     console.log('Adding employee...', employeeForm.value);
+    this.employees.unshift(employeeForm.value);
     this.subscription.push(
       this.employeeService.addEmployee(employeeForm.value)
         .subscribe(
           (response: Employee) => {
             console.log(response);
             this.employee = response;
-            this.getEmployeeList();
-            this.showNotification('success', `${this.employee.name} has been added successfully`);
+            //this.getEmployeeList();
+            this.showNotification(NotificationType.SUCCESS, `${this.employee.name} has been added successfully`);
             employeeForm.reset();
           },
-          (error: any) => {
+          (error: HttpErrorResponse) => {
             console.error(error);
-            this.showNotification('error', `${employeeForm.value.name} has been not added. Please try again`);
+            this.showNotification(NotificationType.ERROR, `${employeeForm.value.name} has been not added. Please try again`);
             employeeForm.reset();
           }
         )
@@ -92,11 +95,11 @@ export class AppComponent implements OnInit, OnDestroy {
             console.log(response);
             this.employee = response;
             this.getEmployeeList();
-            this.showNotification('success', `${this.employee.name} has been updated successfully`);
+            this.showNotification(NotificationType.SUCCESS, `${this.employee.name} has been updated successfully`);
           },
-          (error: any) => {
+          (error: HttpErrorResponse) => {
             console.error(error);
-            this.showNotification('error', `${employee.name} has been not updated. Please try again`);
+            this.showNotification(NotificationType.ERROR, `${employee.name} has been not updated. Please try again`);
           }
         )
     );
@@ -104,24 +107,27 @@ export class AppComponent implements OnInit, OnDestroy {
 
   public deleteEmployee(employeeId: number): void {
     console.log(`Deleting employee by id: ${employeeId}`);
+    const index: number = this.employees.findIndex(employee => employee.id === employeeId);
+    this.employees.splice(index, 1);
+    console.log(this.employees);
     this.subscription.push(
       this.employeeService.deleteEmployee(employeeId)
         .subscribe(
           (response: Employee) => {
             console.log(`Employee deleted`);
             this.employee = response;
-            this.getEmployeeList();
-            this.showNotification('success', `Employee has been deleted successfully`);
+            //this.getEmployeeList();
+            this.showNotification(NotificationType.SUCCESS, `Employee has been deleted successfully`);
           },
-          (error: any) => {
+          (error: HttpErrorResponse) => {
             console.error(error);
-            this.showNotification('error', `Employee was not deleted. Please try again`);
+            this.showNotification(NotificationType.ERROR, `Employee was not deleted. Please try again`);
           }
         )
     );
   }
 
-  public showNotification(type: string, message: string): void {
+  public showNotification(type: NotificationType, message: string): void {
     this.notifier.notify(type, message);
   }
 
