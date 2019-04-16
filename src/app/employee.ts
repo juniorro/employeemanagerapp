@@ -5,5 +5,5 @@ export class Employee {
     public jobTitle: string;
     public phone: string;
     public imageUrl: string;
-    public userCode: string;
+    public employeeCode: string;
 }

@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { Subscription } from 'rxjs'
+import { Subscription } from 'rxjs';
 import { NotifierService } from 'angular-notifier';
 import { EmployeeService } from './employee.service';
 import { Employee } from './employee';
@@ -16,7 +16,7 @@ export class AppComponent implements OnInit, OnDestroy {
   private employee: Employee = new Employee();
   private subscription: Subscription[] = [];
   private notifier: NotifierService;
-  private employeeService: EmployeeService
+  private employeeService: EmployeeService;
 
   constructor(notifier: NotifierService, employeeService: EmployeeService) {
     this.notifier = notifier;
@@ -32,7 +32,8 @@ export class AppComponent implements OnInit, OnDestroy {
       this.employeeService.getEmployees()
         .subscribe(
           (response: Employee[]) => {
-            console.info(response);
+            console.log('Fetching all employees...');
+            console.log(response);
             this.employees = response;
           },
           (error: any) => {
@@ -43,11 +44,13 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   public searchEmployees(employeeName: string): void {
+    console.log('Searching employees...');
     this.subscription.push(
       this.employeeService.searchEmployees(employeeName)
         .subscribe(
           (response: Employee[]) => {
-            console.info(response);
+            console.log(response);
+            console.log('Employees Found...', this.employees);
             this.employees = response;
           },
           (error: any) => {
@@ -59,11 +62,12 @@ export class AppComponent implements OnInit, OnDestroy {
 
   public addEmployee(employeeForm: NgForm): void {
     document.getElementById('addFormId').click();
+    console.log('Adding employee...', employeeForm.value);
     this.subscription.push(
       this.employeeService.addEmployee(employeeForm.value)
         .subscribe(
           (response: Employee) => {
-            console.info(response);
+            console.log(response);
             this.employee = response;
             this.getEmployeeList();
             this.showNotification('success', `${this.employee.name} has been added successfully`);
@@ -79,12 +83,13 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   public editEmployee(employee: Employee): void {
-    document.getElementById(employee.userCode).click();
+    document.getElementById(employee.employeeCode).click();
+    console.log(`Editing employee...${employee}`);
     this.subscription.push(
       this.employeeService.updateEmployee(employee)
         .subscribe(
           (response: Employee) => {
-            console.info(response);
+            console.log(response);
             this.employee = response;
             this.getEmployeeList();
             this.showNotification('success', `${this.employee.name} has been updated successfully`);
@@ -98,11 +103,12 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   public deleteEmployee(employeeId: number): void {
+    console.log(`Deleting employee by id: ${employeeId}`);
     this.subscription.push(
       this.employeeService.deleteEmployee(employeeId)
         .subscribe(
           (response: Employee) => {
-            console.info(response);
+            console.log(`Employee deleted`);
             this.employee = response;
             this.getEmployeeList();
             this.showNotification('success', `Employee has been deleted successfully`);
