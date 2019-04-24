@@ -21,6 +21,10 @@
         </nav>
 
         <div class="row">
+
+            <a (click)="downloadFile()" style="color:red; ">DownloadFile</a>
+
+
             <div *ngFor="let employee of employees" class="col-md-6 col-xl-3">
                 <div class="card m-b-30">
                     <div class="card-body row">
@@ -111,6 +115,13 @@
 
             </div>
 
+            <div *ngIf="employees?.length == 0" class="col-lg-12 col-md-12 col-xl-12">
+                <div class="alert alert-info" role="alert">
+                    <h4 class="alert-heading">NO EMPLOYEES!</h4>
+                    <p>No Employees were found. Try adding an employee.</p>
+                   </div>
+            </div>
+
 
             <!-- Add Employee Modal -->
             <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -153,8 +164,6 @@
                         </div>
                     </div>
                 </div>
-
-
         </div>
     </div>
 

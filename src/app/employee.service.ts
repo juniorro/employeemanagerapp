@@ -8,7 +8,7 @@ import { Employee } from './employee';
 })
 export class EmployeeService {
 
-  private SERVER_URL = 'http://localhost:9000';
+  public SERVER_URL = 'http://localhost:8081';
 
   constructor(private http: HttpClient) {}
 
@@ -30,6 +30,13 @@ export class EmployeeService {
 
   public deleteEmployee(employeeId: number): Observable<Employee> {
     return this.http.delete<Employee>(`${this.SERVER_URL}/employee/delete/${employeeId}`);
+  }
+
+  public downloadFile(username: string, fileName: string): any {
+    return this.http.get(`${this.SERVER_URL}/file/download/${username}/${fileName}`, {
+      observe: 'response',
+      responseType: 'blob'
+    });
   }
 
 }
