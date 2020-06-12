@@ -12,10 +12,6 @@ export class EmployeeService {
 
   constructor(private http: HttpClient) {}
 
-  public searchEmployees(employeeName: string): Observable<Employee[]> {
-    return this.http.get<Employee[]>(`${this.SERVER_URL}/employee/search/${employeeName}`);
-  }
-
   public getEmployees(): Observable<Employee[]> {
     return this.http.get<Employee[]>(`${this.SERVER_URL}/employee/all`);
   }
@@ -30,13 +26,6 @@ export class EmployeeService {
 
   public deleteEmployee(employeeId: number): Observable<Employee> {
     return this.http.delete<Employee>(`${this.SERVER_URL}/employee/delete/${employeeId}`);
-  }
-
-  public downloadFile(username: string, fileName: string): any {
-    return this.http.get(`${this.SERVER_URL}/file/download/${username}/${fileName}`, {
-      observe: 'response',
-      responseType: 'blob'
-    });
   }
 
 }

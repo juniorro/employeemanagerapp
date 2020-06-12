@@ -12,6 +12,8 @@ import { HttpErrorResponse } from '@angular/common/http';
 export class AppComponent implements OnInit {
   public employees: Employee[];
   public employee: Employee;
+  public editEmployee: Employee;
+  public deleteEmployee: Employee;
 
   constructor(private employeeService: EmployeeService) {}
 
@@ -66,7 +68,7 @@ export class AppComponent implements OnInit {
     );
   }
 
-  public editEmployee(employee: Employee): void {
+  public updateEmployee(employee: Employee): void {
     console.log(`Editing employee...${employee}`);
       this.employeeService.updateEmployee(employee).subscribe(
         (response: Employee) => {
@@ -80,7 +82,7 @@ export class AppComponent implements OnInit {
     );
   }
 
-  public deleteEmployee(employeeId: number): void {
+  public onDeleteEmployee(employeeId: number): void {
     console.log(`Deleting employee by id: ${employeeId}`);
       this.employeeService.deleteEmployee(employeeId).subscribe(
         (response: Employee) => {
@@ -92,6 +94,17 @@ export class AppComponent implements OnInit {
           console.error(error);
         }
     );
+  }
+
+  public onOpenModal(employee: Employee, mode: string): void {
+    if (mode === 'edit') {
+      this.editEmployee = employee;
+      document.getElementById('openUpdateModelButton').click();
+    }
+    if (mode === 'delete') {
+      this.deleteEmployee = employee;
+      document.getElementById('openDeleteModelButton').click();
+    }
   }
 
 }
