@@ -13,9 +13,9 @@
                         <a class="nav-link" data-toggle="modal" data-target="#exampleModal">Add Employee <span class="sr-only">(current)</span></a>
                     </li>
                 </ul>
-                <form #searchForm="ngForm" (ngSubmit)="searchEmployees(searchForm.value.searchName)" class="form-inline my-2 my-lg-0">
-                    <input type="text" ngModel name="searchName" id="searchName" class="form-control mr-sm-2" placeholder="Enter name..." required>
-                    <button type="submit" [disabled]="searchForm.invalid" class="btn btn-secondary my-2 my-sm-0">Search</button>
+                <form class="form-inline my-2 my-lg-0">
+                    <input type="search" (ngModelChange)="searchEmployees(key.value)" #key="ngModel"
+                    ngModel name="key" id="searchName" class="form-control mr-sm-2" placeholder="Search users..." required>
                 </form>
             </div>
         </nav>

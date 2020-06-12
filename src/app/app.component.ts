@@ -16,10 +16,10 @@ export class AppComponent implements OnInit {
   constructor(private employeeService: EmployeeService) {}
 
   ngOnInit() {
-    this.getEmployeeList();
+    this.getEmployees();
   }
 
-  public getEmployeeList(): void {
+  public getEmployees(): void {
     console.log('Fetching all employees...');
       this.employeeService.getEmployees().subscribe(
         (response: Employee[]) => {
@@ -32,18 +32,21 @@ export class AppComponent implements OnInit {
     );
   }
 
-  public searchEmployees(employeeName: string): void {
+  public searchEmployees(key: string): void {
     console.log('Searching employees...');
-      this.employeeService.searchEmployees(employeeName).subscribe(
-        (response: Employee[]) => {
-          console.log(response);
-          console.log('Employees Found...', this.employees);
-          this.employees = response;
-        },
-        (error: HttpErrorResponse) => {
-          console.error(error);
-        }
-    );
+    const results: Employee[] = [];
+    for (const employee of this.employees) {
+      if (employee.name.toLowerCase().indexOf(key.toLowerCase()) !== -1
+          || employee.email.toLowerCase().indexOf(key.toLowerCase()) !== -1 ||
+          employee.phone.toLowerCase().indexOf(key.toLowerCase()) !== -1 ||
+          employee.jobTitle.toLowerCase().indexOf(key.toLowerCase()) !== -1) {
+          results.push(employee);
+      }
+    }
+    this.employees = results;
+    if (results.length === 0 || !key) {
+      this.getEmployees();
+    }
   }
 
   public addEmployee(employeeForm: NgForm): void {
@@ -53,7 +56,7 @@ export class AppComponent implements OnInit {
         (response: Employee) => {
           console.log(response);
           this.employee = response;
-          this.getEmployeeList();
+          this.getEmployees();
           employeeForm.reset();
         },
         (error: HttpErrorResponse) => {
@@ -69,7 +72,7 @@ export class AppComponent implements OnInit {
         (response: Employee) => {
           console.log(response);
           this.employee = response;
-          this.getEmployeeList();
+          this.getEmployees();
         },
         (error: HttpErrorResponse) => {
           console.error(error);
@@ -83,7 +86,7 @@ export class AppComponent implements OnInit {
         (response: Employee) => {
           console.log(`Employee deleted`);
           this.employee = response;
-          this.getEmployeeList();
+          this.getEmployees();
         },
         (error: HttpErrorResponse) => {
           console.error(error);
