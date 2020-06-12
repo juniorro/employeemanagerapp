@@ -22,14 +22,14 @@
 
         <div class="row">
 
-            <a (click)="downloadFile()" style="color:red; ">DownloadFile</a>
+            <!-- <a (click)="downloadFile()" style="color:red; ">DownloadFile</a> -->
 
 
             <div *ngFor="let employee of employees" class="col-md-6 col-xl-3">
                 <div class="card m-b-30">
                     <div class="card-body row">
                         <div class="col-6">
-                            <a href=""><img src="{{employee.imageUrl}}" alt="" class="img-fluid rounded-circle w-60"></a>
+                            <a href=""><img src="{{employee?.imageUrl}}" alt="" class="img-fluid rounded-circle w-60"></a>
                         </div>
                         <div class="col-6 card-title align-self-center mb-0">
                             <h5>{{employee.name}}</h5>
@@ -42,14 +42,14 @@
                     </ul>
                     <div class="card-body">
                         <div class="float-right btn-group btn-group-sm">
-                            <a data-toggle="modal" href="#{{employee.employeeCode}}" class="btn btn-primary tooltips" data-placement="top" data-original-title="Edit"><i class="fa fa-pencil"></i> </a>
-                            <a href="#" data-toggle="modal" href="#{{employee.jobTitle}}" class="btn btn-secondary tooltips" data-placement="top" data-original-title="Delete"><i class="fa fa-times"></i></a>
+                            <a data-toggle="modal" href="#{{employee?.employeeCode}}" class="btn btn-primary tooltips" data-placement="top" data-original-title="Edit"><i class="fa fa-pencil"></i> </a>
+                            <a href="#" data-toggle="modal" href="#{{employee?.jobTitle}}" class="btn btn-secondary tooltips" data-placement="top" data-original-title="Delete"><i class="fa fa-times"></i></a>
                         </div>
                     </div>
                 </div>
 
                 <!-- Edit Modal -->
-                <div class="modal fade" id="{{employee.employeeCode}}" tabindex="-1" role="dialog" aria-labelledby="employeeEditModalLabel" aria-hidden="true">
+                <div class="modal fade" id="{{employee?.employeeCode}}" tabindex="-1" role="dialog" aria-labelledby="employeeEditModalLabel" aria-hidden="true">
                     <div class="modal-dialog" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
@@ -62,17 +62,17 @@
                                 <form #editForm="ngForm">
                                     <div class="form-group">
                                         <label for="name">Name</label>
-                                        <input type="text" ngModel="{{employee.name}}" name="name" class="form-control" id="name" aria-describedby="emailHelp" placeholder="Name">
+                                        <input type="text" ngModel="{{employee?.name}}" name="name" class="form-control" id="name" aria-describedby="emailHelp" placeholder="Name">
                                     </div>
-                                    <input type="hidden" ngModel="{{employee.id}}" name="id" class="form-control" id="id" placeholder="Email">
-                                    <input type="hidden" ngModel="{{employee.employeeCode}}" name="userCode" class="form-control" id="userCode" placeholder="Email">
+                                    <input type="hidden" ngModel="{{employee?.id}}" name="id" class="form-control" id="id" placeholder="Email">
+                                    <input type="hidden" ngModel="{{employee?.employeeCode}}" name="userCode" class="form-control" id="userCode" placeholder="Email">
                                     <div class="form-group">
                                         <label for="email">Email Address</label>
-                                        <input type="email" ngModel="{{employee.email}}" name="email" class="form-control" id="email" placeholder="Email">
+                                        <input type="email" ngModel="{{employee?.email}}" name="email" class="form-control" id="email" placeholder="Email">
                                     </div>
                                     <div class="form-group">
                                         <label for="phone">Job title</label>
-                                        <input type="text" ngModel="{{employee.jobTitle}}" name="jobTitle" class="form-control" id="jobTitle" placeholder="Job title">
+                                        <input type="text" ngModel="{{employee?.jobTitle}}" name="jobTitle" class="form-control" id="jobTitle" placeholder="Job title">
                                     </div>
                                     <div class="form-group">
                                         <label for="phone">Phone</label>
@@ -166,6 +166,3 @@
                 </div>
         </div>
     </div>
-
-
-    <notifier-container></notifier-container>
