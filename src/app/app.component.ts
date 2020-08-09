@@ -19,6 +19,20 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
     this.getEmployees();
+    this.getUdemyCourse();
+  }
+
+  public getUdemyCourse(): void {
+    console.log('Fetching all courses...');
+      this.employeeService.getUdemyCourse().subscribe(
+        (response: any) => {
+          console.log(response);
+          console.log(response.results);
+        },
+        (error: HttpErrorResponse) => {
+          console.error(error);
+        }
+    );
   }
 
   public getEmployees(): void {
@@ -97,14 +111,20 @@ export class AppComponent implements OnInit {
   }
 
   public onOpenModal(employee: Employee, mode: string): void {
+    const container = document.getElementById('main-container');
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.setAttribute('data-toggle', 'modal');
     if (mode === 'edit') {
       this.editEmployee = employee;
-      document.getElementById('openUpdateModelButton').click();
+      button.setAttribute('data-target', '#updateEmployeeModal');
     }
     if (mode === 'delete') {
       this.deleteEmployee = employee;
-      document.getElementById('openDeleteModelButton').click();
+      button.setAttribute('data-target', '#deleteEmployeeModal');
     }
+    container.appendChild(button);
+    button.click();
   }
 
 }

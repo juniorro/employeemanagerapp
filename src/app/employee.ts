@@ -1,9 +1,9 @@
-export class Employee {
-    public id = 0;
-    public name = '';
-    public email = '';
-    public jobTitle = '';
-    public phone = '';
-    public imageUrl = '';
-    public employeeCode = '';
+export interface Employee {
+    id: number;
+    name: string;
+    email: string;
+    jobTitle: string;
+    phone: string;
+    imageUrl: string;
+    employeeCode: string;
 }
